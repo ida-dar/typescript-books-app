@@ -1,16 +1,20 @@
 import React from 'react';
-import { Book } from './../../interfaces/Book.interface';
-import './BooksList.css';
+import { useSelector, useDispatch } from 'react-redux';
 import BookItem from '../BookItem/BookItem';
+import { Book } from './../../interfaces/Book.interface';
+import { StoreState } from './../../redux/mainTypes';
+import { removeBook as removeBookAction } from './../../redux/booksRedux';
 
-interface Props {
-  books: Book[];
-  removeBook: (book: Book) => void,
-}
+import './BooksList.css';
 
-const BooksList: React.FC<Props> = ({ books, removeBook }) => {
+const BooksList: React.FC = () => {
+
+  const books = useSelector((state: StoreState) => state.books);
+  const dispatch = useDispatch();
+  const removeBook = (id: string) => dispatch(removeBookAction(id));
+
   return (
-    <ul className='books-list'>
+    <ul className="books-list">
       {books.map((book: Book) => <BookItem key={book.id} book={book} removeBook={removeBook} />)}
     </ul>
   );
